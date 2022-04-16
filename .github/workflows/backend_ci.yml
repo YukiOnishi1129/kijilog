@@ -1,0 +1,27 @@
+name: Go
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend_ci:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          fetch-depth: 1
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+        
+    - name: Run build
+      run: cd backend && go build -v ./...
+
+    - name: Run staticcheck lint
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest && cd backend && staticcheck ./...
+
+    - name: Run test
+      run: cd backend && go test -v ./...
