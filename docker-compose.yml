@@ -1,5 +1,15 @@
 version: "3.8"
 services:
+  web:
+    container_name: ${FRONT_CONTAINER_NAME}
+    build: frontend
+    volumes:
+      - ./frontend:/frontend
+    working_dir: /frontend
+    command: sh -c "yarn build && yarn start"
+    ports:
+     - ${FRONTEND_PORT}:3000
+
   server:
     container_name: ${BACKEND_CONTAINER_NAME}
     build: backend
